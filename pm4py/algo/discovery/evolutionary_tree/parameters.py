@@ -14,6 +14,16 @@ class Parameters(Enum):
     ELITE_SIZE = "elite_size"
 
 
+class TreeKeys(Enum):
+    ID = 'id'
+    TREE = 'tree'
+    QUALITY = 'quality'
+    FITNESS = 'fitness'
+    PRECISION = 'precision'
+    SIMPLICITY = 'simplicity'
+    GENERALIZATION = 'generalization'
+
+
 default_discovery = {
     Parameters.MAX_EVOLUTIONS: 100,
     Parameters.N_EVOLUTION_NO_CHANGE: 3,

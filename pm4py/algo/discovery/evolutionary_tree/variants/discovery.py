@@ -1,4 +1,4 @@
-from pm4py.algo.discovery.evolutionary_tree.parameters import default_discovery
+from pm4py.algo.discovery.evolutionary_tree.parameters import Parameters, TreeKeys, default_discovery
 
 
 def apply(log, parameters=None):
@@ -7,4 +7,56 @@ def apply(log, parameters=None):
     if parameters is None or parameters == {}:
         parameters = default_discovery
 
-    return 0  # process tree
+    return algorithm(log, parameters)
+
+
+def algorithm(log, parameters):
+    # Generate Population and list that keeps list of max qulity of generations
+    generation_quality = [None]*parameters[Parameters.MAX_EVOLUTIONS]
+    initial_population = generate_initial_population(log)
+    population_candidates = evaluate(initial_population)
+
+    # Keep mutating for MAX_EVOLUTIONS iterations
+    for gen in range(parameters[Parameters.MAX_EVOLUTIONS]):
+        # Store maximum quality of previous generation
+        generation_quality[gen] = max(c[TreeKeys.QUALITY] for c in population_candidates)
+
+        # Terminate if passed quality threshold is surpassed or difference
+        # between generation too low
+        if generation_quality[gen] >= parameters[Parameters.TARGET_QUALITY] \
+           or (gen and generation_quality[gen] - generation_quality[gen - 1]
+                < parameters[Parameters.N_EVOLUTION_NO_CHANGE]):
+            break
+
+        # Get elite population and select candidate population
+        elite, population_candidates = select_candidates(population_candidates)
+
+        # Mutate / crossover selected population
+        mutate_candidates(population_candidates)
+
+        # Evaluate new mutations
+        evaluate(population_candidates)
+
+        # Bring elite back to population candidates
+        population_candidates = population_candidates + elite
+
+    # fetch tree with the best quality measurement
+    best_tree = max(population_candidates, key=lambda c: c[TreeKeys.QUALITY])
+
+    return best_tree[TreeKeys.TREE], best_tree
+
+
+def generate_initial_population(log):
+    return 0
+
+
+def evaluate(population):
+    return 0
+
+
+def select_candidates(population):
+    return 0
+
+
+def mutate_candidates(population):
+    return 0
