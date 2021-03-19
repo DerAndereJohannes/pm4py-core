@@ -12,6 +12,7 @@ class Parameters(Enum):
     TARGET_QUALITY = "target_quality"
     POPULATION_SIZE = "population_size"
     ELITE_SIZE = "elite_size"
+    INIT_GENERATION_VARIANT = "generation_variant"
 
 
 class TreeKeys(Enum):
@@ -22,12 +23,3 @@ class TreeKeys(Enum):
     PRECISION = 'precision'
     SIMPLICITY = 'simplicity'
     GENERALIZATION = 'generalization'
-
-
-default_discovery = {
-    Parameters.MAX_EVOLUTIONS: 100,
-    Parameters.N_EVOLUTION_NO_CHANGE: 3,
-    Parameters.TARGET_QUALITY: 1,
-    Parameters.POPULATION_SIZE: 20,
-    Parameters.ELITE_SIZE: 5
-}
