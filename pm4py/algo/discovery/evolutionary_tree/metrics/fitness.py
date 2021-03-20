@@ -7,7 +7,7 @@ import pm4py.evaluation.replay_fitness.evaluator as evaluator
 
 def tree_alignments(log, tree):
     tree["alignment"] = compute_tree_alignments(log, tree[TreeKeys.TREE.value], variant=fitness_variants.APPROXIMATED_MATRIX_LP)
-    tree[Variants.TREE_ALIGNMENTS.value["name"]] = evaluator.evaluate(tree["alignment"], variant=evaluator.ALIGNMENT_BASED)["averageFitness"]
+    return evaluator.evaluate(tree["alignment"], variant=evaluator.ALIGNMENT_BASED)["averageFitness"]
 
 
 class Variants(Enum):

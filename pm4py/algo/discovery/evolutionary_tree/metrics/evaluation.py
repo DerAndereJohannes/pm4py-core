@@ -17,7 +17,7 @@ def evaluate_tree(log, tree, parameters):
     # for each evaluation dictionary in the parameters
     for metric in parameters[Parameters.EVALUATION_METRICS.value]:
         metric_dict = metric[0].value
-        metric_dict["function"](log, tree)
+        tree[metric_dict["name"]] = max(0, metric_dict["function"](log, tree))
 
 
 def calculate_quality(tree, parameters):

@@ -16,7 +16,7 @@ def apply(log, parameters=None):
 def algorithm(log, parameters):
     # Generate Population and list that keeps list of max qulity of generations
     generation_quality = [None]*parameters[Parameters.MAX_EVOLUTIONS]
-    initial_population = generate_initial_population(log, parameters, parameters[Parameters.INIT_GENERATION_VARIANT])
+    initial_population = generate_initial_population(log, parameters, parameters[Parameters.INIT_GENERATION_VARIANT.value])
     population_candidates = evaluate(initial_population)
 
     # Keep mutating for MAX_EVOLUTIONS iterations

@@ -19,6 +19,7 @@ class Parameters(Enum):
 class TreeKeys(Enum):
     ID = 'id'
     TREE = 'tree'
+    LOG_ACTIVITIES = 'activities'
     QUALITY = 'quality'
     EVALUATION_METRICS = 'evaluation'
     FITNESS = 'fitness'

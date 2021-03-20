@@ -9,13 +9,12 @@ operators = [Operator.SEQUENCE, Operator.XOR,
              Operator.PARALLEL, Operator.LOOP]  # ,Operator.OR]
 
 
-def random_generation(log, parameters):
-    log_labels = get_event_labels(log, parameters[Parameters.ACTIVITY_KEY.value])
-    new_tree = random_selection(None, log_labels)
+def random_generation(log, activity_labels, parameters):
+    new_tree = random_selection(None, activity_labels)
 
     # if the initial node is not an activity node
     if new_tree.label is None:
-        generate_tree(new_tree, log_labels)
+        generate_tree(new_tree, activity_labels)
 
     return new_tree
 
@@ -52,15 +51,17 @@ DEFAULT_VARIANT = Variants.RANDOM
 
 def generate_initial_population(log, parameters, variant=DEFAULT_VARIANT):
     population = [None]*parameters[Parameters.POPULATION_SIZE.value]
+    activity_labels = get_event_labels(log, parameters[Parameters.ACTIVITY_KEY.value])
     trees = set()
 
     for treeid in range(len(population)):
         population[treeid] = dict()
         population[treeid][TreeKeys.ID.value] = treeid
+        population[treeid][TreeKeys.LOG_ACTIVITIES.value] = activity_labels
         new_tree = None
         # prevent duplicates
         while new_tree is None or new_tree in trees:
-            new_tree = variant(log, parameters)
+            new_tree = variant(log, activity_labels, parameters)
 
         population[treeid][TreeKeys.TREE.value] = new_tree
         trees.add(new_tree)
