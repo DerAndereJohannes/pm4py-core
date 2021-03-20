@@ -1,8 +1,7 @@
 from enum import Enum
 from random import randint
 from pm4py.algo.discovery.evolutionary_tree.parameters import Parameters, TreeKeys
-from pm4py.objects.process_tree.process_tree import ProcessTree
-from pm4py.objects.process_tree.pt_operator import Operator
+from pm4py.objects.process_tree.process_tree import ProcessTree, Operator
 from pm4py.objects.log.util.log import get_event_labels
 
 
@@ -36,7 +35,7 @@ def random_selection(parent, log_labels):
     op_ac = randint(0, 1)
 
     # if operator
-    if op_ac or parent is None:
+    if op_ac:
         operator_id = randint(0, len(operators) - 1)
         return ProcessTree(operator=operators[operator_id], parent=parent)
     else:
@@ -53,10 +52,17 @@ DEFAULT_VARIANT = Variants.RANDOM
 
 def generate_initial_population(log, parameters, variant=DEFAULT_VARIANT):
     population = [None]*parameters[Parameters.POPULATION_SIZE.value]
+    trees = set()
 
     for treeid in range(len(population)):
         population[treeid] = dict()
         population[treeid][TreeKeys.ID.value] = treeid
-        population[treeid][TreeKeys.TREE.value] = variant(log, parameters)
+        new_tree = None
+        # prevent duplicates
+        while new_tree is None or new_tree in trees:
+            new_tree = variant(log, parameters)
+
+        population[treeid][TreeKeys.TREE.value] = new_tree
+        trees.add(new_tree)
 
     return population
