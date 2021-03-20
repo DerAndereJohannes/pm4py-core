@@ -7,12 +7,11 @@ from pm4py.objects.log.util.log import get_event_labels
 
 
 operators = [Operator.SEQUENCE, Operator.XOR,
-             Operator.PARALLEL, Operator.LOOP,
-             Operator.OR]
+             Operator.PARALLEL, Operator.LOOP]  # ,Operator.OR]
 
 
 def random_generation(log, parameters):
-    log_labels = get_event_labels(log, parameters[Parameters.ACTIVITY_KEY])
+    log_labels = get_event_labels(log, parameters[Parameters.ACTIVITY_KEY.value])
     new_tree = random_selection(None, log_labels)
 
     # if the initial node is not an activity node
@@ -53,11 +52,11 @@ DEFAULT_VARIANT = Variants.RANDOM
 
 
 def generate_initial_population(log, parameters, variant=DEFAULT_VARIANT):
-    population = [None]*parameters[Parameters.POPULATION_SIZE]
+    population = [None]*parameters[Parameters.POPULATION_SIZE.value]
 
     for treeid in range(len(population)):
         population[treeid] = dict()
-        population[treeid][TreeKeys.ID] = treeid
-        population[treeid][TreeKeys.TREE] = variant(log, parameters)
+        population[treeid][TreeKeys.ID.value] = treeid
+        population[treeid][TreeKeys.TREE.value] = variant(log, parameters)
 
     return population

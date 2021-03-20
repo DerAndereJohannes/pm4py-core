@@ -13,12 +13,14 @@ class Parameters(Enum):
     POPULATION_SIZE = "population_size"
     ELITE_SIZE = "elite_size"
     INIT_GENERATION_VARIANT = "generation_variant"
+    EVALUATION_METRICS = "evaluation_metrics"
 
 
 class TreeKeys(Enum):
     ID = 'id'
     TREE = 'tree'
     QUALITY = 'quality'
+    EVALUATION_METRICS = 'evaluation'
     FITNESS = 'fitness'
     PRECISION = 'precision'
     SIMPLICITY = 'simplicity'
