@@ -12,5 +12,5 @@ default_discovery = {
     Parameters.POPULATION_SIZE.value: 20,
     Parameters.ELITE_SIZE.value: 5,
     Parameters.EVALUATION_METRICS.value: [(fitness.Variants.TREE_ALIGNMENTS, 10),
-                                          (simplicity.Variants.SIMPLICITY_OCCURENCE, 1)]
+                                          (simplicity.Variants.SIMPLICITY_SIZE, 1)]
 }
