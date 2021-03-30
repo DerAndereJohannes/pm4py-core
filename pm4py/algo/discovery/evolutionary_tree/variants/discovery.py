@@ -1,7 +1,7 @@
 from pm4py.algo.discovery.evolutionary_tree.parameters import Parameters, TreeKeys
 from pm4py.algo.discovery.evolutionary_tree.defaults import default_discovery
 from pm4py.algo.discovery.evolutionary_tree.evolutions.initial_generation import generate_initial_population
-from pm4py.algo.discovery.evolutionary_tree.evolutions.initial_generation import Variants as init_variants
+from pm4py.algo.discovery.evolutionary_tree.metrics.evaluation import evaluate_tree_list
 
 
 def apply(log, parameters=None):
@@ -16,8 +16,8 @@ def apply(log, parameters=None):
 def algorithm(log, parameters):
     # Generate Population and list that keeps list of max qulity of generations
     generation_quality = [None]*parameters[Parameters.MAX_EVOLUTIONS]
-    initial_population = generate_initial_population(log, parameters, parameters[Parameters.INIT_GENERATION_VARIANT.value])
-    population_candidates = evaluate(initial_population)
+    population_candidates = generate_initial_population(log, parameters, parameters[Parameters.INIT_GENERATION_VARIANT.value])
+    evaluate_tree_list(log, population_candidates, parameters)
 
     # Keep mutating for MAX_EVOLUTIONS iterations
     for gen in range(parameters[Parameters.MAX_EVOLUTIONS]):
@@ -38,7 +38,7 @@ def algorithm(log, parameters):
         mutate_candidates(population_candidates)
 
         # Evaluate new mutations
-        evaluate(population_candidates)
+        evaluate_tree_list(log, population_candidates, parameters)
 
         # Bring elite back to population candidates
         population_candidates = population_candidates + elite
@@ -47,9 +47,6 @@ def algorithm(log, parameters):
     best_tree = max(population_candidates, key=lambda c: c[TreeKeys.QUALITY])
 
     return best_tree[TreeKeys.TREE], best_tree
-
-def evaluate(population):
-    return 0
 
 
 def select_candidates(population):

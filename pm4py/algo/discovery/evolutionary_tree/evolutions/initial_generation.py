@@ -141,32 +141,38 @@ def get_missing_sections(main_children, other_children):
 
 def generate_loop(duplicates, parent):
     loop_root = ProcessTree(operator=Operator.LOOP, parent=parent)
-    # get number of options
-    seq_length = len(duplicates)
-    # select which activity to be singled out (if any)
-    single_choice = randint(0, seq_length)
+    loop_child_1 = []
+    loop_child_2 = []
 
-    # generate the single activity
-    if single_choice == seq_length:
-        single = ProcessTree(parent=loop_root)
-    else:
-        single = ProcessTree(label=duplicates[single_choice], parent=loop_root)
+    # assign all duplicates to either the do or redo child
+    for dup in duplicates:
+        if randint(0, 1):
+            loop_child_1.append(dup)
+        else:
+            loop_child_2.append(dup)
+    # *(DO, REDO, *TAU*)
+    # add the do child of the loop operator
+    loop_root.children.append(generate_dup_child(loop_child_1, loop_root))
 
-    # generate the sequence operator and children
-    seq = ProcessTree(operator=Operator.SEQUENCE, parent=loop_root)
-    seq_child = {duplicates[i] for i in range(seq_length) if i != single_choice}
-    seq.children = [ProcessTree(label=a, parent=seq) for a in seq_child]
-
-    # decide on which comes first
-    if randint(0, 1):
-        loop_root.children.extend((single, seq))
-    else:
-        loop_root.children.extend((seq, single))
+    # add the redo child of the loop operator
+    loop_root.children.append(generate_dup_child(loop_child_2, loop_root))
 
     # add final tau
     loop_root.children.append(ProcessTree(parent=loop_root))
 
     return loop_root
+
+
+def generate_dup_child(duplicates, parent):
+    if len(duplicates) == 0:
+        return ProcessTree(parent=parent)
+    elif len(duplicates) == 1:
+        return ProcessTree(label=duplicates[0], parent=parent)
+    else:
+        seq = ProcessTree(operator=Operator.SEQUENCE, parent=parent)
+        seq.children = [ProcessTree(label=a, parent=seq) for a in duplicates]
+
+        return seq
 
 
 def single_trace_model(log, activity_labels, parameters):
