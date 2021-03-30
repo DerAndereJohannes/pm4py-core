@@ -169,8 +169,29 @@ def generate_loop(duplicates, parent):
     return loop_root
 
 
+def single_trace_model(log, activity_labels, parameters):
+    # generate all trace process trees
+    if "trace_trees" not in parameters:
+        parameters["trace_trees"] = create_trace_trees(log, parameters)
+    if "trace_id_used" not in parameters:
+        parameters["trace_id_used"] = set()
+    # if all traces have been used, create a random tree
+    if len(parameters["trace_id_used"]) >= len(log):
+        return random_generation(log, activity_labels, parameters)
+
+    # fetch remaining unused trace_ids
+    remaining_ids = list({x for x in range(len(log))} - parameters["trace_id_used"])
+    # select new trace from remaining ids
+    selector = randint(0, len(remaining_ids) - 1)
+    parameters["trace_id_used"].add(remaining_ids[selector])
+
+    # return random trace from generated trees
+    return parameters["trace_trees"][remaining_ids[selector]]
+
+
 class Variants(Enum):
     RANDOM = random_generation
+    SINGLE_TRACE = single_trace_model
     TRACE_MODEL = trace_model
 
 

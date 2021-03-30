@@ -5,7 +5,7 @@ import pm4py.algo.discovery.evolutionary_tree.metrics.simplicity as simplicity
 
 default_discovery = {
     Parameters.ACTIVITY_KEY.value: 'concept:name',
-    Parameters.INIT_GENERATION_VARIANT.value: init_variants.RANDOM,
+    Parameters.INIT_GENERATION_VARIANT.value: init_variants.SINGLE_TRACE,
     Parameters.MAX_EVOLUTIONS.value: 100,
     Parameters.N_EVOLUTION_NO_CHANGE.value: 3,
     Parameters.TARGET_QUALITY.value: 1,
