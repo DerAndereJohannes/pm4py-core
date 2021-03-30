@@ -2,6 +2,7 @@ from pm4py.algo.discovery.evolutionary_tree.parameters import Parameters, TreeKe
 from pm4py.algo.discovery.evolutionary_tree.defaults import default_discovery
 from pm4py.algo.discovery.evolutionary_tree.evolutions.initial_generation import generate_initial_population
 from pm4py.algo.discovery.evolutionary_tree.metrics.evaluation import evaluate_tree_list
+from pm4py.algo.discovery.evolutionary_tree.evolutions.candidate_selection import select_candidates
 
 
 def apply(log, parameters=None):
@@ -32,7 +33,7 @@ def algorithm(log, parameters):
             break
 
         # Get elite population and select candidate population
-        elite, population_candidates = select_candidates(population_candidates)
+        elite, population_candidates = select_candidates(population_candidates, parameters, parameters[Parameters.SELECTION_VARIANT.value])
 
         # Mutate / crossover selected population
         mutate_candidates(population_candidates)
@@ -47,10 +48,6 @@ def algorithm(log, parameters):
     best_tree = max(population_candidates, key=lambda c: c[TreeKeys.QUALITY])
 
     return best_tree[TreeKeys.TREE], best_tree
-
-
-def select_candidates(population):
-    return 0
 
 
 def mutate_candidates(population):

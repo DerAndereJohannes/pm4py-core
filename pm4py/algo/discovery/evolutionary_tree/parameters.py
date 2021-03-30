@@ -13,6 +13,7 @@ class Parameters(Enum):
     POPULATION_SIZE = "population_size"
     ELITE_SIZE = "elite_size"
     INIT_GENERATION_VARIANT = "generation_variant"
+    SELECTION_VARIANT = "selection_variant"
     EVALUATION_METRICS = "evaluation_metrics"
 
 
